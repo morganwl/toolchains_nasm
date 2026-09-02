@@ -8,8 +8,12 @@ nasm_cc_test(
     name = "nasm_test_test",
     size = "small",
     srcs = select({
-        "@platforms//os:macos": ["always_succeed_main_mac.asm"],
+        "//platforms:macho64_constraint": ["always_succeed_main_mac.asm"],
         "//conditions:default": ["always_succeed_main.asm"],
+    }),
+    target_compatible_with = select({
+        "@platforms//cpu:aarch64": ["@platforms//:incompatible"],
+        "//conditions:default": [],
     }),
 )
 
@@ -17,6 +21,10 @@ cc_test(
     name = "nasm_component_test",
     size = "small",
     srcs = ["nasm_component_test.c"],
+    target_compatible_with = select({
+        "@platforms//cpu:aarch64": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
     deps = [":nasm_component"],
 )
 
@@ -26,6 +34,10 @@ nasm_cc_library(
         "@platforms//os:macos": ["nasm_component_test_mac.asm"],
         "//conditions:default": ["nasm_component_test.asm"],
     }),
+    target_compatible_with = select({
+        "@platforms//cpu:aarch64": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
 )
 
 native_test(
@@ -34,6 +46,10 @@ native_test(
     src = select({
         "@platforms//os:macos": ":nasm_executable_mac",
         "//conditions:default": ":nasm_executable",
+    }),
+    target_compatible_with = select({
+        "@platforms//cpu:aarch64": ["@platforms//:incompatible"],
+        "//conditions:default": [],
     }),
 )
 
@@ -51,6 +67,7 @@ nasm_cc_binary(
     srcs = ["always_succeed_main_mac.asm"],
     target_compatible_with = [
         "@platforms//os:macos",
+        "@platforms//cpu:x86_64",
     ],
 )
 
@@ -61,6 +78,10 @@ nasm_cc_test(
     hdrs = [
         "includes_inc.asm",
     ],
+    target_compatible_with = select({
+        "@platforms//cpu:aarch64": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
 )
 
 nasm_cc_test(
@@ -70,6 +91,10 @@ nasm_cc_test(
     preincs = [
         "includes_inc.asm",
     ],
+    target_compatible_with = select({
+        "@platforms//cpu:aarch64": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
 )
 
 nasm_cc_test(
@@ -78,4 +103,8 @@ nasm_cc_test(
     srcs = ["includes_main.asm"],
     hdrs = ["includes/includes_inc.asm"],
     includes = ["includes"],
+    target_compatible_with = select({
+        "@platforms//cpu:aarch64": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
 )

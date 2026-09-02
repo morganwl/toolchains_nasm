@@ -1,28 +1,37 @@
-load("@bazel_skylib//lib:selects.bzl", "selects")
+load(":utils.bzl", "platform_and_settings")
 
 package(default_visibility = ["//visibility:public"])
 
 filegroup(name = "empty")
 
-selects.config_setting_group(
+platform_and_settings(
     name = "elf",
-    match_any = [
+    constraint_values = [
         "@platforms//os:linux",
+        "@platforms//cpu:i386",
     ],
 )
 
-platform(
+platform_and_settings(
     name = "elf64",
     constraint_values = [
-        ":elf",
+        "@platforms//os:linux",
         "@platforms//cpu:x86_64",
     ],
 )
 
-platform(
+platform_and_settings(
     name = "macho64",
     constraint_values = [
         "@platforms//os:macos",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+platform_and_settings(
+    name = "win64",
+    constraint_values = [
+        "@platforms//os:windows",
         "@platforms//cpu:x86_64",
     ],
 )
