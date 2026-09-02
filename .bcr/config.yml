@@ -1,3 +1,7 @@
-fixedReleaser:
-  login: morganwl
-  email: 48608155+morganwl@users.noreply.github.com
+# publish-to-bcr configuration.
+#
+# The submission author is set via the `author_name` / `author_email`
+# inputs of `.github/workflows/bcr-publish.yaml` rather than the
+# deprecated `fixedReleaser` key.
+#
+# See https://github.com/bazel-contrib/publish-to-bcr/blob/main/templates/README.md
